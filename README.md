@@ -2,6 +2,12 @@
 
 Some basic functions to easily add data to `indexedDB` database.
 
+It will maintain list of created databases in a local database `sys.db` so that databases can be cleared. The indexedDB implementation does not allow listing local databases.
+
+# Dependencies:
+
+Expects to find Promise A+ implementation _promise from the environment.
+
 ## Initializing the database
 
 During DB creation you can specify which tables are initialized. The example below initializes two tables:
@@ -144,6 +150,16 @@ You have to specify
    });
 ```
 
+# Clearing databases
+
+It will maintain list of created databases in a local database `sys.db` so that databases can be cleared. The indexedDB implementation does not allow listing local databases.
+
+
+```javascript
+testDB.clearDatabases( function(data) {
+     if(data.name == "myDatabaseName") return true;
+});
+```
 
 
 
@@ -268,7 +284,7 @@ The class has following internal singleton variables:
 ```javascript
 
 if(_db) return;
-// In the following line, you should include the prefixes of implementations you want to test.
+// if you want experimental support, enable browser based prefixes
 _db = window.indexedDB; //  || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
 
 _initDone = true;
@@ -286,14 +302,11 @@ _dbList = _localDB( "sys.db", {
 
 
 ```javascript
-// console.log("Clear databases called ");
 
 _dbList.then( function() {
   var dbs = _dbList.table("databases");
-  // console.log(" --- reading --- ");
   dbs.forEach( function(data, cursor) {
      if(fn(data)) {
-         // console.log("Trying to delete ", data.name);
          _db.deleteDatabase(data.name);
          cursor.delete();
      }       
@@ -349,14 +362,7 @@ request.onupgradeneeded = function (event) {
                 var opts = options.tables[n];
                 // Create another object store called "names" with the autoIncrement flag set as true.    
                 var objStore = db.createObjectStore(n, opts.createOptions);
-                // objectStore.createIndex("name", "name", { unique: false });
-                /*
-                {
-                   indexes {
-                       field : { unique: false  }
-                   }
-                }
-                */
+
                 if(opts.indexes) {
                     for(var iName in opts.indexes) {
                         if(opts.indexes.hasOwnProperty(iName)) {
