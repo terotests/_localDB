@@ -393,7 +393,7 @@
       _myTrait_._initDB = function (t) {
 
         if (_db) return;
-        // In the following line, you should include the prefixes of implementations you want to test.
+        // if you want experimental support, enable browser based prefixes
         _db = window.indexedDB; //  || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
 
         _initDone = true;
