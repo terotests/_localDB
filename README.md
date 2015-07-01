@@ -4,9 +4,9 @@ Some basic functions to easily add data to `indexedDB` database.
 
 It will maintain list of created databases in a local database `sys.db` so that databases can be cleared. The indexedDB implementation does not allow listing local databases.
 
-# Dependencies:
+# Dependencies and status:
 
-Expects to find Promise A+ implementation _promise from the environment.
+Currently ment for internal use only. Expects to find Promise A+ implementation _promise from the environment.
 
 ## Initializing the database
 
