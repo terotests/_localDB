@@ -222,25 +222,6 @@
           return this._cursorAction('readonly', usingIndex, function (cursor) {
             fn(cursor.value, cursor);
           });
-
-          /*
-          var trans = this._db.transaction(this._table, "readwrite");
-          var store = trans.objectStore(this._table);
-          var items = [];
-          trans.oncomplete = function(evt) {  
-          };
-          var cursorRequest = store.openCursor();
-          cursorRequest.onerror = function(error) {
-          console.log(error);
-          };
-          cursorRequest.onsuccess = function(evt) {                    
-          var cursor = evt.target.result;
-          if (cursor) {
-          fn(cursor.value, cursor);
-          cursor.continue();
-          }
-          };
-          */
         };
 
         /**
@@ -280,48 +261,6 @@
               result(items);
             }).fail(fail);
           });
-
-          /*
-          var prom = _promise();
-          var trans = this._db.transaction(this._table, "readonly");
-          var store = trans.objectStore(this._table);
-          var items = [];
-          var cursorRequest;
-          if(usingIndex) {
-          var singleKeyRange, indexName;
-          // BUG or FEATURE: currently accepts only one key like
-          // { folderName : "data" };
-          for(var n in usingIndex) {
-          if(usingIndex.hasOwnProperty(n)) {
-             indexName = n; 
-             singleKeyRange = IDBKeyRange.only(usingIndex[n]);
-          }
-          }
-          if(indexName) {
-          var index = store.index(indexName); // open using the index only
-          cursorRequest = index.openCursor(singleKeyRange);
-          } else {
-          prom.reject("invalid index key");
-          return;
-          }
-          } else {
-          cursorRequest = store.openCursor();
-          }
-          trans.oncomplete = function(evt) {  
-          prom.resolve(items);
-          };
-          cursorRequest.onerror = function(error) {
-          prom.reject(error);
-          };
-          cursorRequest.onsuccess = function(evt) {                    
-          var cursor = evt.target.result;
-          if (cursor) {
-          items.push(cursor.value);
-          cursor.continue();
-          }
-          };
-          return prom;
-          */
         };
 
         if (_myTrait_.__traitInit && !_myTrait_.hasOwnProperty('__traitInit')) _myTrait_.__traitInit = _myTrait_.__traitInit.slice();
