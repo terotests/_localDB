@@ -412,14 +412,11 @@
        * @param float fn
        */
       _myTrait_.clearDatabases = function (fn) {
-        // console.log("Clear databases called ");
 
         _dbList.then(function () {
           var dbs = _dbList.table('databases');
-          // console.log(" --- reading --- ");
           dbs.forEach(function (data, cursor) {
             if (fn(data)) {
-              // console.log("Trying to delete ", data.name);
               _db.deleteDatabase(data.name);
               cursor['delete']();
             }
@@ -475,14 +472,7 @@
                 var opts = options.tables[n];
                 // Create another object store called "names" with the autoIncrement flag set as true.   
                 var objStore = db.createObjectStore(n, opts.createOptions);
-                // objectStore.createIndex("name", "name", { unique: false });
-                /*
-                {
-                   indexes {
-                       field : { unique: false  }
-                   }
-                }
-                */
+
                 if (opts.indexes) {
                   for (var iName in opts.indexes) {
                     if (opts.indexes.hasOwnProperty(iName)) {
